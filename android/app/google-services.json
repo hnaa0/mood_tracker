@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "357369515522",
+    "project_id": "mood-tracker-5bada",
+    "storage_bucket": "mood-tracker-5bada.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:357369515522:android:e0a422a43ffe5abad6211b",
+        "android_client_info": {
+          "package_name": "com.example.mood_tracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBBuYpR2Yx3NO_tdoPXRGbyJ34_oD4H1Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
