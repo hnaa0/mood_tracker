@@ -1,24 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mood_tracker/constants/colors.dart';
+import 'package:mood_tracker/features/authentication/view_models/sign_in_view_model.dart';
 import 'package:mood_tracker/features/authentication/views/sign_up_screen.dart';
 import 'package:mood_tracker/features/authentication/widgets/auth_bottom_app_bar.dart';
+import 'package:mood_tracker/features/authentication/widgets/auth_button.dart';
+import 'package:mood_tracker/features/authentication/widgets/sign_in_text_field.dart';
 
-class SignInScreen extends StatefulWidget {
+class SignInScreen extends ConsumerStatefulWidget {
   static const routeUrl = "/sign-in";
   static const routeName = "sign-in";
 
   const SignInScreen({super.key});
 
   @override
-  State<SignInScreen> createState() => _SignInScreenState();
+  ConsumerState<SignInScreen> createState() => _SignInScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
+class _SignInScreenState extends ConsumerState<SignInScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  final Map<String, String> _formData = {};
+
+  void _onSignInTap() {
+    if (_formKey.currentState != null && _formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
+      ref.read(signInProvider.notifier).signIn(
+            form: _formData,
+            context: context,
+          );
+    }
+  }
+
   void _onNewAccountTap() {
     FocusScope.of(context).unfocus();
     context.pushNamed(SignUpScreen.routeName);
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -140,84 +168,19 @@ class _SignInScreenState extends State<SignInScreen> {
                     ),
                     const Gap(24),
                     Form(
+                      key: _formKey,
                       child: Column(
                         children: [
-                          Container(
-                            decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(28),
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.white,
-                                  spreadRadius: 1,
-                                  blurRadius: 5,
-                                  offset: Offset(0, 0),
-                                ),
-                              ],
-                            ),
-                            child: TextFormField(
-                              autocorrect: false,
-                              autofocus: false,
-                              decoration: const InputDecoration(
-                                labelText: "Email",
-                                labelStyle: TextStyle(
-                                  color: Color(
-                                    ThemeColors.cadetgray,
-                                  ),
-                                ),
-                                fillColor: Colors.white,
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide.none,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(28),
-                                  ),
-                                ),
-                                contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 24,
-                                  vertical: 18,
-                                ),
-                              ),
-                            ),
+                          SignInTextField(
+                            controller: _emailController,
+                            fieldName: "Email",
+                            formData: _formData,
                           ),
                           const Gap(18),
-                          Container(
-                            decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(28),
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.white,
-                                  spreadRadius: 1,
-                                  blurRadius: 5,
-                                  offset: Offset(0, 0),
-                                ),
-                              ],
-                            ),
-                            child: TextFormField(
-                              autocorrect: false,
-                              autofocus: false,
-                              decoration: const InputDecoration(
-                                labelText: "Password",
-                                labelStyle: TextStyle(
-                                  color: Color(
-                                    ThemeColors.cadetgray,
-                                  ),
-                                ),
-                                fillColor: Colors.white,
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide.none,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(28),
-                                  ),
-                                ),
-                                contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 24,
-                                  vertical: 18,
-                                ),
-                              ),
-                            ),
+                          SignInTextField(
+                            controller: _passwordController,
+                            fieldName: "Password",
+                            formData: _formData,
                           ),
                         ],
                       ),
@@ -239,33 +202,10 @@ class _SignInScreenState extends State<SignInScreen> {
                       ],
                     ),
                     const Gap(14),
-                    Container(
-                      alignment: Alignment.center,
-                      width: MediaQuery.of(context).size.width,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 18,
-                      ),
-                      decoration: BoxDecoration(
-                        color: const Color(
-                          ThemeColors.lavender,
-                        ),
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(28),
-                        ),
-                        border: Border.all(
-                          color: const Color(
-                            ThemeColors.babypowder,
-                          ),
-                        ),
-                      ),
-                      child: const Text(
-                        "Sign In",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                        ),
+                    GestureDetector(
+                      onTap: _onSignInTap,
+                      child: const AuthButton(
+                        text: "Sign In",
                       ),
                     ),
                     const Gap(20),
@@ -276,7 +216,7 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
         ),
         bottomNavigationBar: AuthBottomAppBar(
-          sentence: "Create a new account",
+          sentence: "Create a new account?",
           name: "Sign Up",
           onTapFunc: _onNewAccountTap,
         ),
