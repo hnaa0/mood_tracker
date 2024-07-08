@@ -7,12 +7,10 @@ class SignUpTextField extends StatefulWidget {
     super.key,
     required this.fieldName,
     required this.controller,
-    required this.fieldValue,
     required this.formData,
   });
 
   final String fieldName;
-  final String fieldValue;
   final Map<String, String> formData;
   final TextEditingController controller;
 
@@ -86,7 +84,7 @@ class _SignUpTextFieldState extends State<SignUpTextField> {
             ),
             contentPadding: const EdgeInsets.only(
               top: 6,
-              bottom: 6,
+              bottom: 4,
             ),
             suffix: widget.fieldName == "Password"
                 ? GestureDetector(
