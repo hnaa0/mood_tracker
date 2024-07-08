@@ -29,6 +29,7 @@ class MyApp extends ConsumerWidget {
     return MaterialApp.router(
       routerConfig: ref.watch(routerProvider),
       title: 'Mood Tracker',
+      debugShowCheckedModeBanner: false,
       theme: MoodTrackerTheme.light,
       darkTheme: MoodTrackerTheme.dark,
     );
