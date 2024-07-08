@@ -1,5 +1,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mood_tracker/constants/colors.dart';
 import 'package:mood_tracker/features/home/views/home_screen.dart';
@@ -65,26 +66,35 @@ class _MainNavScreenState extends State<MainNavScreen> {
         items: [
           Padding(
             padding: const EdgeInsets.all(4),
-            child: Image.asset(
-              "assets/images/home.png",
+            child: SvgPicture.asset(
+              "assets/images/home.svg",
               width: 24,
-              color: const Color(ThemeColors.outerSpace),
+              colorFilter: const ColorFilter.mode(
+                Colors.white,
+                BlendMode.srcIn,
+              ),
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(4),
-            child: Image.asset(
-              "assets/images/edit.png",
+            child: SvgPicture.asset(
+              "assets/images/edit.svg",
               width: 24,
-              color: const Color(ThemeColors.outerSpace),
+              colorFilter: const ColorFilter.mode(
+                Colors.white,
+                BlendMode.srcIn,
+              ),
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(4),
-            child: Image.asset(
-              "assets/images/settings.png",
+            child: SvgPicture.asset(
+              "assets/images/settings.svg",
               width: 24,
-              color: const Color(ThemeColors.outerSpace),
+              colorFilter: const ColorFilter.mode(
+                Colors.white,
+                BlendMode.srcIn,
+              ),
             ),
           ),
         ],
