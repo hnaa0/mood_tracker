@@ -38,7 +38,7 @@ class AuthBottomAppBar extends StatelessWidget {
                     sentence,
                     style: const TextStyle(
                       color: Color(
-                        ThemeColors.outerSpace,
+                        ThemeColors.davysGray,
                       ),
                     ),
                   ),
