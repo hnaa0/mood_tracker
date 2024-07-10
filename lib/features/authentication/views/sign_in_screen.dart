@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mood_tracker/constants/colors.dart';
-import 'package:mood_tracker/features/authentication/view_models/sign_in_view_model.dart';
+import 'package:mood_tracker/features/authentication/view_models/auth_view_model.dart';
 import 'package:mood_tracker/features/authentication/views/sign_up_screen.dart';
 import 'package:mood_tracker/features/authentication/widgets/auth_bottom_app_bar.dart';
 import 'package:mood_tracker/features/authentication/widgets/auth_button.dart';
@@ -30,7 +30,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     if (_formKey.currentState != null && _formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      ref.read(signInProvider.notifier).signIn(
+      ref.read(authProvider.notifier).signIn(
             form: _formData,
             context: context,
           );
