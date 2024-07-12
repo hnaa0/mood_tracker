@@ -51,7 +51,7 @@ class WriteTextField extends StatelessWidget {
           ),
           child: TextFormField(
             controller: controller,
-            maxLines: fieldName == FieldType.content.name ? 7 : 1,
+            maxLines: fieldName == FieldType.content.name ? 5 : 1,
             decoration: InputDecoration(
               isDense: true,
               filled: true,
@@ -104,11 +104,7 @@ class WriteTextField extends StatelessWidget {
             ),
             validator: (value) {
               if (value != null && value.length < 2) {
-                if (fieldName == FieldType.title.name) {
-                  return "Title must be at least two characters.";
-                } else {
-                  return "Please enter your content.";
-                }
+                return 'ji';
               }
               return null;
             },

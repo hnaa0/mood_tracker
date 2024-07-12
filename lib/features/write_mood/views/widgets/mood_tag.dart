@@ -4,8 +4,8 @@ import 'package:mood_tracker/common/mood_type.dart';
 import 'package:mood_tracker/constants/colors.dart';
 import 'package:mood_tracker/features/settings/view_models/theme_config_view_model.dart';
 
-class MoodBox extends ConsumerWidget {
-  const MoodBox({
+class MoodTag extends ConsumerWidget {
+  const MoodTag({
     super.key,
     required this.mood,
     required this.selectedIdx,

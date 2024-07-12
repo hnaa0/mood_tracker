@@ -5,7 +5,7 @@ import 'package:mood_tracker/common/mood_type.dart';
 import 'package:mood_tracker/constants/colors.dart';
 import 'package:mood_tracker/features/settings/view_models/theme_config_view_model.dart';
 import 'package:mood_tracker/features/write_mood/view_models/upload_mood_view_model.dart';
-import 'package:mood_tracker/features/write_mood/views/widgets/mood.dart';
+import 'package:mood_tracker/features/write_mood/views/widgets/mood_tag.dart';
 import 'package:mood_tracker/features/write_mood/views/widgets/write_text_field.dart';
 
 enum FieldType {
@@ -29,7 +29,11 @@ class _WriteScreenState extends ConsumerState<WriteScreen> {
   final TextEditingController _contentController = TextEditingController();
 
   final Map<String, String> _formData = {};
+
   int _selectedMoodIdx = 0;
+  String _title = "";
+  String _content = "";
+  bool _isInvalid = false;
 
   void onMoodTap({required String mood, required int index}) {
     setState(() {
@@ -39,27 +43,48 @@ class _WriteScreenState extends ConsumerState<WriteScreen> {
   }
 
   void _onPostTap() {
-    if (_formKey.currentState != null && _formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-
-      ref
-          .read(uploadMoodProvider.notifier)
-          .uploadMood(
-            form: _formData,
-            context: context,
-          )
-          .then((value) {
-        _contentController.clear();
-        _titleController.clear();
-        _selectedMoodIdx = 0;
-        setState(() {});
+    if (_content.length < 2 || _title.length < 2) {
+      setState(() {
+        _isInvalid = true;
       });
+      return;
+    }
+
+    if (_formKey.currentState != null) {
+      if (_formKey.currentState!.validate()) {
+        _formKey.currentState!.save();
+
+        ref
+            .read(uploadMoodProvider.notifier)
+            .uploadMood(
+              form: _formData,
+              context: context,
+            )
+            .then((value) {
+          _contentController.clear();
+          _titleController.clear();
+          _selectedMoodIdx = 0;
+          _isInvalid = false;
+          FocusScope.of(context).unfocus();
+          setState(() {});
+        });
+      }
     }
   }
 
   @override
   void initState() {
     super.initState();
+    _titleController.addListener(() {
+      setState(() {
+        _title = _titleController.text;
+      });
+    });
+    _contentController.addListener(() {
+      setState(() {
+        _content = _contentController.text;
+      });
+    });
   }
 
   @override
@@ -114,7 +139,7 @@ class _WriteScreenState extends ConsumerState<WriteScreen> {
                       onTap: () {
                         onMoodTap(mood: mood.name, index: index);
                       },
-                      child: MoodBox(
+                      child: MoodTag(
                         mood: mood,
                         selectedIdx: _selectedMoodIdx,
                         index: index,
@@ -188,6 +213,20 @@ class _WriteScreenState extends ConsumerState<WriteScreen> {
                   ),
                 ),
               ),
+              if (_isInvalid)
+                const Padding(
+                  padding: EdgeInsets.only(left: 4, top: 4),
+                  child: Text(
+                    "Title and content must be at least 2 characters.",
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Color(
+                        ThemeColors.imperialRed,
+                      ),
+                    ),
+                  ),
+                ),
+              const Gap(20),
             ],
           ),
         ),
