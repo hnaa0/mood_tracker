@@ -8,8 +8,19 @@ class WriteMoodRepository {
   Future<void> saveMood(MoodModel data) async {
     await _db.collection("moods").add(data.toJson());
   }
+
+  Stream<List<MoodModel>> streamMoods(String userId) {
+    return _db
+        .collection("moods")
+        .where("userUid", isEqualTo: userId)
+        .orderBy("createdAt", descending: true)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => MoodModel.fromJson(json: doc.data()))
+            .toList());
+  }
 }
 
-final writeMoodRepo = Provider(
+final moodRepo = Provider(
   (ref) => WriteMoodRepository(),
 );
