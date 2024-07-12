@@ -23,3 +23,32 @@ enum MoodType {
         MoodType.frustrated => 0xff8A6F64,
       };
 }
+
+extension MoodTypeExtension on MoodType {
+  static MoodType fromString(String mood) {
+    switch (mood) {
+      case 'happy':
+        return MoodType.happy;
+      case 'calm':
+        return MoodType.calm;
+      case 'worried':
+        return MoodType.worried;
+      case 'excited':
+        return MoodType.excited;
+      case 'sad':
+        return MoodType.sad;
+      case 'scared':
+        return MoodType.scared;
+      case 'angry':
+        return MoodType.angry;
+      case 'infatuated':
+        return MoodType.infatuated;
+      case 'disppointed':
+        return MoodType.disppointed;
+      case 'frustrated':
+        return MoodType.frustrated;
+      default:
+        throw Exception('Invalid mood type');
+    }
+  }
+}

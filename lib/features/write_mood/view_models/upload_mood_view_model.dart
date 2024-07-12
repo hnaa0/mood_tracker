@@ -14,12 +14,12 @@ class UploadMoodViewModel extends AsyncNotifier<void> {
 
   @override
   FutureOr<void> build() {
-    _moodRepository = ref.read(writeMoodRepo);
+    _moodRepository = ref.read(moodRepo);
     _authRepository = ref.read(authRepo);
   }
 
   Future<void> uploadMood(
-      {required Map<String, String> form,
+      {required Map<String, dynamic> form,
       required BuildContext context}) async {
     state = const AsyncValue.loading();
     final user = _authRepository.user!;
@@ -33,6 +33,7 @@ class UploadMoodViewModel extends AsyncNotifier<void> {
           userName: "userName",
           userUid: user.uid,
           createdAt: DateTime.now().millisecondsSinceEpoch,
+          moodType: form["moodType"]!,
         ),
       );
     });

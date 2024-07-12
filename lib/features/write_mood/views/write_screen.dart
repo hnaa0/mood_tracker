@@ -28,7 +28,7 @@ class _WriteScreenState extends ConsumerState<WriteScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
 
-  final Map<String, String> _formData = {};
+  final Map<String, dynamic> _formData = {};
 
   int _selectedMoodIdx = 0;
   String _title = "";
@@ -38,7 +38,7 @@ class _WriteScreenState extends ConsumerState<WriteScreen> {
   void onMoodTap({required String mood, required int index}) {
     setState(() {
       _selectedMoodIdx = index;
-      _formData["mood"] = mood;
+      _formData["moodType"] = MoodTypeExtension.fromString(mood);
     });
   }
 
@@ -48,6 +48,10 @@ class _WriteScreenState extends ConsumerState<WriteScreen> {
         _isInvalid = true;
       });
       return;
+    }
+
+    if (_formData["moodType"] == null) {
+      _formData["moodType"] = MoodType.values[_selectedMoodIdx];
     }
 
     if (_formKey.currentState != null) {

@@ -15,7 +15,7 @@ class WriteTextField extends StatelessWidget {
   final TextEditingController controller;
   final String fieldName;
   final bool isDark;
-  final Map<String, String> formData;
+  final Map<String, dynamic> formData;
 
   @override
   Widget build(BuildContext context) {
@@ -102,12 +102,6 @@ class WriteTextField extends StatelessWidget {
                 ),
               ),
             ),
-            validator: (value) {
-              if (value != null && value.length < 2) {
-                return 'ji';
-              }
-              return null;
-            },
             onSaved: (newValue) {
               if (newValue != null) {
                 formData[fieldName] = newValue;
