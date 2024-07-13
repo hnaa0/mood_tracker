@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mood_tracker/constants/colors.dart';
 import 'package:mood_tracker/features/authentication/view_models/auth_view_model.dart';
-import 'package:provider/provider.dart';
 
 class AuthButton extends ConsumerWidget {
   const AuthButton({
