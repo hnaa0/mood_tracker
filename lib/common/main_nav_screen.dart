@@ -32,7 +32,9 @@ class _MainNavScreenState extends ConsumerState<MainNavScreen> {
   late int _selectedIndex = MainNavScreen.tabs.indexOf(widget.tab);
 
   void _onNavTap(int idx) {
-    _selectedIndex = idx;
+    setState(() {
+      _selectedIndex = idx;
+    });
 
     context.go("/${MainNavScreen.tabs[idx]}");
   }
@@ -41,67 +43,73 @@ class _MainNavScreenState extends ConsumerState<MainNavScreen> {
   Widget build(BuildContext context) {
     final isDark = ref.watch(themeConfigProvider).darkMode;
 
-    return Scaffold(
-      body: Stack(
-        children: [
-          Offstage(
-            offstage: _selectedIndex != 0,
-            child: const HomeScreen(),
-          ),
-          Offstage(
-            offstage: _selectedIndex != 1,
-            child: const WriteScreen(),
-          ),
-          Offstage(
-            offstage: _selectedIndex != 2,
-            child: const SettingsScreen(),
-          ),
-        ],
-      ),
-      bottomNavigationBar: CurvedNavigationBar(
-        backgroundColor: Color(
-          isDark ? ThemeColors.outerSpace : ThemeColors.babypowder,
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        extendBody: true,
+        body: Stack(
+          children: [
+            Offstage(
+              offstage: _selectedIndex != 0,
+              child: const HomeScreen(),
+            ),
+            Offstage(
+              offstage: _selectedIndex != 1,
+              child: const WriteScreen(),
+            ),
+            Offstage(
+              offstage: _selectedIndex != 2,
+              child: const SettingsScreen(),
+            ),
+          ],
         ),
-        buttonBackgroundColor: const Color(ThemeColors.lavender),
-        color: const Color(
-          ThemeColors.uranianBlue,
+        bottomNavigationBar: CurvedNavigationBar(
+          backgroundColor: Color(
+            isDark ? ThemeColors.outerSpace : ThemeColors.babypowder,
+          ).withOpacity(0),
+          buttonBackgroundColor: const Color(ThemeColors.uranianBlue),
+          color: const Color(
+            ThemeColors.uranianBlue,
+          ),
+          onTap: (index) => _onNavTap(index),
+          items: [
+            Padding(
+              padding: const EdgeInsets.all(4),
+              child: SvgPicture.asset(
+                "assets/images/home.svg",
+                width: 24,
+                colorFilter: ColorFilter.mode(
+                  isDark ? const Color(ThemeColors.outerSpace) : Colors.white,
+                  BlendMode.srcIn,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(4),
+              child: SvgPicture.asset(
+                "assets/images/edit.svg",
+                width: 24,
+                colorFilter: ColorFilter.mode(
+                  isDark ? const Color(ThemeColors.outerSpace) : Colors.white,
+                  BlendMode.srcIn,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(4),
+              child: SvgPicture.asset(
+                "assets/images/settings.svg",
+                width: 24,
+                colorFilter: ColorFilter.mode(
+                  isDark ? const Color(ThemeColors.outerSpace) : Colors.white,
+                  BlendMode.srcIn,
+                ),
+              ),
+            ),
+          ],
         ),
-        onTap: (index) => _onNavTap(index),
-        items: [
-          Padding(
-            padding: const EdgeInsets.all(4),
-            child: SvgPicture.asset(
-              "assets/images/home.svg",
-              width: 24,
-              colorFilter: ColorFilter.mode(
-                isDark ? const Color(ThemeColors.outerSpace) : Colors.white,
-                BlendMode.srcIn,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(4),
-            child: SvgPicture.asset(
-              "assets/images/edit.svg",
-              width: 24,
-              colorFilter: ColorFilter.mode(
-                isDark ? const Color(ThemeColors.outerSpace) : Colors.white,
-                BlendMode.srcIn,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(4),
-            child: SvgPicture.asset(
-              "assets/images/settings.svg",
-              width: 24,
-              colorFilter: ColorFilter.mode(
-                isDark ? const Color(ThemeColors.outerSpace) : Colors.white,
-                BlendMode.srcIn,
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

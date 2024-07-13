@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mood_tracker/features/authentication/repos/auth_repository.dart';
+import 'package:mood_tracker/features/home/view_models/fetch_mood_view_model.dart';
 import 'package:mood_tracker/features/home/views/home_screen.dart';
 import 'package:mood_tracker/features/user/view_models/user_view_model.dart';
 
@@ -26,6 +27,7 @@ class AuthViewModel extends AsyncNotifier<void> {
         email: form["email"]!,
         password: form["password"]!,
       );
+      ref.invalidate(fetchMoodProvider);
     });
 
     if (state.hasError) {
