@@ -21,25 +21,42 @@ class SignInScreen extends ConsumerStatefulWidget {
 
 class _SignInScreenState extends ConsumerState<SignInScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  late final TextEditingController _emailController = TextEditingController();
+  late final TextEditingController _passwordController =
+      TextEditingController();
 
   final Map<String, String> _formData = {};
 
-  void _onSignInTap() {
-    if (_formKey.currentState != null && _formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
+  bool _emailCheck(String value) {
+    var pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
 
-      ref.read(authProvider.notifier).signIn(
-            form: _formData,
-            context: context,
-          );
+    return RegExp(pattern).hasMatch(value);
+  }
+
+  void _onSignInTap() {
+    if (_formKey.currentState != null) {
+      if (_formKey.currentState!.validate()) {
+        if (!_emailCheck(_emailController.text)) return;
+
+        _formKey.currentState!.save();
+
+        ref.read(authProvider.notifier).signIn(
+              form: _formData,
+              context: context,
+            );
+      }
     }
   }
 
   void _onNewAccountTap() {
     FocusScope.of(context).unfocus();
     context.pushNamed(SignUpScreen.routeName);
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -175,6 +192,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                             controller: _emailController,
                             fieldName: "Email",
                             formData: _formData,
+                            emailCheck: _emailCheck,
                           ),
                           const Gap(18),
                           SignInTextField(

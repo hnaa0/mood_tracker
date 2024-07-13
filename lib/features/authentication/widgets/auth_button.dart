@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mood_tracker/constants/colors.dart';
+import 'package:mood_tracker/features/authentication/view_models/auth_view_model.dart';
+import 'package:provider/provider.dart';
 
-class AuthButton extends StatelessWidget {
+class AuthButton extends ConsumerWidget {
   const AuthButton({
     super.key,
     required this.text,
@@ -10,7 +13,7 @@ class AuthButton extends StatelessWidget {
   final String text;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       alignment: Alignment.center,
       width: MediaQuery.of(context).size.width,
@@ -36,14 +39,20 @@ class AuthButton extends StatelessWidget {
           )
         ],
       ),
-      child: Text(
-        text,
-        style: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w500,
-          color: Colors.white,
-        ),
-      ),
+      child: ref.watch(authProvider).isLoading
+          ? const SizedBox(
+              width: 22,
+              height: 22,
+              child: CircularProgressIndicator(),
+            )
+          : Text(
+              text,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: Colors.white,
+              ),
+            ),
     );
   }
 }

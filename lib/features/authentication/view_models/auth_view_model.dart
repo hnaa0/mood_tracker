@@ -57,6 +57,19 @@ class AuthViewModel extends AsyncNotifier<void> {
 
       await user.createProfile(userCredential: userCredential, form: form);
     });
+
+    if (state.hasError) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text((state.error as FirebaseException).message ??
+              "something went wrong :("),
+        ),
+      );
+    } else {
+      if (!context.mounted) return;
+      context.go(HomeScreen.routeUrl);
+    }
   }
 
   Future<void> signOut() async {
