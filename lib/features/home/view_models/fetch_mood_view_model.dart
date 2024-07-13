@@ -17,6 +17,11 @@ class FetchMoodViewModel extends StreamNotifier<List<MoodModel>> {
 
     return result;
   }
+
+  Future<void> deleteMood(String id) async {
+    await ref.read(moodRepo).deleteMood(id);
+    _fetchMoods();
+  }
 }
 
 final fetchMoodProvider =

@@ -1,6 +1,7 @@
 import 'package:mood_tracker/common/mood_type.dart';
 
 class MoodModel {
+  final String id;
   final String title;
   final String content;
   final String userName;
@@ -9,6 +10,7 @@ class MoodModel {
   final MoodType moodType;
 
   MoodModel({
+    this.id = "",
     required this.title,
     required this.content,
     required this.userName,
@@ -19,6 +21,7 @@ class MoodModel {
 
   Map<String, dynamic> toJson() {
     return {
+      "id": id,
       "title": title,
       "content": content,
       "userName": userName,
@@ -29,7 +32,8 @@ class MoodModel {
   }
 
   MoodModel.fromJson({required Map<String, dynamic> json})
-      : title = json["title"],
+      : id = json["id"],
+        title = json["title"],
         content = json["content"],
         userName = json["userName"],
         userUid = json["userUid"],

@@ -6,7 +6,9 @@ class WriteMoodRepository {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   Future<void> saveMood(MoodModel data) async {
-    await _db.collection("moods").add(data.toJson());
+    final docRef = await _db.collection("moods").add(data.toJson());
+    final docId = docRef.id;
+    await _db.collection("moods").doc(docId).update({"id": docId});
   }
 
   Stream<List<MoodModel>> streamMoods(String userId) {
@@ -18,6 +20,10 @@ class WriteMoodRepository {
         .map((snapshot) => snapshot.docs
             .map((doc) => MoodModel.fromJson(json: doc.data()))
             .toList());
+  }
+
+  Future<void> deleteMood(String id) async {
+    await _db.collection("moods").doc(id).delete();
   }
 }
 
