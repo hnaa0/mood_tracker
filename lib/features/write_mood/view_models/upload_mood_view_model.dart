@@ -43,8 +43,15 @@ class UploadMoodViewModel extends AsyncNotifier<void> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor:
-              Color(isDark ? ThemeColors.platinum : ThemeColors.cadetgray),
-          content: const Text("Mood upload completed!"),
+              Color(isDark ? ThemeColors.outerSpace : ThemeColors.babypowder),
+          content: Text(
+            "Mood upload completed!",
+            style: TextStyle(
+              color: Color(
+                isDark ? ThemeColors.babypowder : ThemeColors.outerSpace,
+              ),
+            ),
+          ),
         ),
       );
     }
